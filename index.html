@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agent Network — João's AI Company</title>
+    <title>Agent Network — B.K. 🐙</title>
     <style>
         :root {
             --bg-primary: #000;
@@ -18,454 +18,531 @@
             --border: #2a2a2a;
             --success: #4ade80;
             --warning: #fbbf24;
+            --danger: #f87171;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
             line-height: 1.6;
+            height: 100vh;
+            overflow: hidden;
         }
 
-        /* Header */
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(12px);
+        /* Layout */
+        .app {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .sidebar-header {
+            padding: 20px;
             border-bottom: 1px solid var(--border);
-            padding: 16px 48px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
 
-        .logo {
+        .sidebar-logo {
             display: flex;
             align-items: center;
-            gap: 12px;
-            font-size: 18px;
+            gap: 10px;
+            font-size: 16px;
             font-weight: 600;
         }
 
-        .logo-icon {
-            width: 32px;
-            height: 32px;
+        .sidebar-logo .icon {
+            width: 28px;
+            height: 28px;
             background: var(--accent);
-            border-radius: 8px;
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 16px;
         }
 
-        nav {
+        .sidebar-nav {
+            flex: 1;
+            padding: 12px;
+        }
+
+        .nav-item {
             display: flex;
-            gap: 32px;
-        }
-
-        nav a {
-            color: var(--text-secondary);
-            text-decoration: none;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            cursor: pointer;
             font-size: 14px;
-            transition: color 0.2s;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+            margin-bottom: 4px;
         }
 
-        nav a:hover {
+        .nav-item:hover {
+            background: var(--bg-tertiary);
             color: var(--text-primary);
         }
 
-        .nav-cta {
-            background: var(--text-primary);
-            color: var(--bg-primary);
-            padding: 8px 20px;
-            border-radius: 8px;
-            font-weight: 500;
+        .nav-item.active {
+            background: var(--accent);
+            color: var(--text-primary);
         }
 
-        /* Hero */
-        .hero {
-            padding: 160px 48px 80px;
-            text-align: center;
-            max-width: 1200px;
-            margin: 0 auto;
+        .nav-item .icon { font-size: 16px; }
+
+        .nav-section-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            padding: 16px 12px 8px;
+            letter-spacing: 1px;
         }
 
-        .hero h1 {
-            font-size: 64px;
-            font-weight: 700;
-            line-height: 1.1;
-            margin-bottom: 24px;
-            background: linear-gradient(135deg, #fff 0%, #888 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        /* Main Content */
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
 
-        .hero h1 span {
-            display: block;
-            font-size: 48px;
-            color: var(--accent);
-            -webkit-text-fill-color: var(--accent);
-        }
-
-        .hero p {
-            font-size: 20px;
-            color: var(--text-secondary);
-            max-width: 600px;
-            margin: 0 auto 40px;
-        }
-
-        .hero-cta {
-            display: inline-flex;
+        /* Header */
+        .header {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 12px;
-            background: var(--text-primary);
-            color: var(--bg-primary);
-            padding: 16px 32px;
-            border-radius: 12px;
-            font-size: 16px;
+            background: var(--bg-secondary);
+        }
+
+        .header-title {
+            font-size: 18px;
             font-weight: 600;
-            text-decoration: none;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .header-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 13px;
+            cursor: pointer;
             transition: all 0.2s;
         }
 
-        .hero-cta:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 32px rgba(124, 92, 255, 0.3);
+        .header-btn:hover {
+            border-color: var(--accent);
         }
 
-        .hero-cta code {
-            background: var(--bg-tertiary);
-            padding: 4px 12px;
-            border-radius: 6px;
-            font-size: 14px;
+        .header-btn.primary {
+            background: var(--accent);
+            border-color: var(--accent);
         }
 
-        /* Testimonials */
-        .testimonials {
-            padding: 80px 48px;
-            background: var(--bg-secondary);
+        .header-btn.primary:hover {
+            background: var(--accent-hover);
         }
 
-        .testimonials h2 {
-            text-align: center;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--text-muted);
-            margin-bottom: 48px;
-        }
-
-        .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 16px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .testimonial {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
+        /* Content Area */
+        .content {
+            flex: 1;
+            overflow-y: auto;
             padding: 24px;
-            font-size: 15px;
-            color: var(--text-secondary);
-            line-height: 1.7;
         }
 
-        /* How It Works */
-        .how-it-works {
-            padding: 120px 48px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .how-it-works h2 {
-            text-align: center;
-            font-size: 48px;
-            font-weight: 700;
-            margin-bottom: 80px;
-        }
-
-        .steps {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 48px;
-        }
-
-        .step {
-            text-align: center;
-        }
-
-        .step-number {
-            width: 64px;
-            height: 64px;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            font-weight: 700;
-            margin: 0 auto 24px;
-        }
-
-        .step h3 {
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 12px;
-        }
-
-        .step p {
-            color: var(--text-secondary);
-        }
-
-        /* Features */
-        .features {
-            padding: 120px 48px;
-            background: var(--bg-secondary);
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 16px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .feature {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
+        /* Mission Banner */
+        .mission-banner {
+            background: linear-gradient(135deg, var(--accent) 0%, #5c8aff 100%);
             border-radius: 12px;
-            padding: 32px;
+            padding: 20px 24px;
+            margin-bottom: 24px;
+            cursor: pointer;
         }
 
-        .feature-icon {
-            width: 48px;
-            height: 48px;
-            background: var(--bg-tertiary);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            margin-bottom: 20px;
+        .mission-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+            margin-bottom: 4px;
         }
 
-        .feature h3 {
+        .mission-text {
             font-size: 18px;
             font-weight: 600;
-            margin-bottom: 8px;
         }
 
-        .feature p {
+        .mission-edit {
+            display: none;
+            margin-top: 12px;
+        }
+
+        .mission-edit input {
+            width: 100%;
+            padding: 10px 14px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 16px;
+        }
+
+        .mission-edit input:focus {
+            outline: none;
+            border-color: rgba(255,255,255,0.5);
+        }
+
+        .mission-banner:hover .mission-edit { display: block; }
+        .mission-banner.editing .mission-edit { display: block; }
+        .mission-banner.editing .mission-text { display: none; }
+
+        /* Stats Row */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .stat-label {
+            font-size: 12px;
             color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1px;
+        }
+
+        .tab {
+            padding: 10px 16px;
             font-size: 14px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
         }
 
-        /* Org Chart Demo */
-        .org-demo {
-            padding: 120px 48px;
-            max-width: 1200px;
-            margin: 0 auto;
+        .tab:hover { color: var(--text-primary); }
+
+        .tab.active {
+            color: var(--text-primary);
+            border-bottom-color: var(--accent);
         }
 
-        .org-demo h2 {
-            text-align: center;
-            font-size: 32px;
-            font-weight: 600;
+        /* Agent Cards Grid */
+        .agents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .agent-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .agent-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .agent-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
             margin-bottom: 16px;
         }
 
-        .org-demo > p {
-            text-align: center;
-            color: var(--text-secondary);
-            margin-bottom: 48px;
-        }
-
-        .org-chart-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .org-level {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .org-node {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 16px 24px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            min-width: 200px;
-            transition: all 0.2s;
-        }
-
-        .org-node:hover {
-            border-color: var(--accent);
-            transform: translateY(-2px);
-        }
-
-        .org-node.ceo {
-            background: linear-gradient(135deg, var(--bg-card) 0%, rgba(124, 92, 255, 0.15) 100%);
-            border-color: var(--accent);
-            min-width: 240px;
-        }
-
-        .org-node-icon {
-            width: 40px;
-            height: 40px;
+        .agent-avatar {
+            width: 44px;
+            height: 44px;
             background: var(--bg-tertiary);
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size: 22px;
         }
 
-        .org-node.ceo .org-node-icon {
-            background: var(--accent);
-        }
+        .agent-card.ceo .agent-avatar { background: var(--accent); }
+        .agent-card.bk .agent-avatar { background: #10b981; }
 
-        .org-node-info h4 {
-            font-size: 14px;
+        .agent-info h3 {
+            font-size: 15px;
             font-weight: 600;
         }
 
-        .org-node-info span {
+        .agent-info .role {
             font-size: 12px;
             color: var(--text-secondary);
         }
 
-        .org-connector {
-            width: 2px;
-            height: 24px;
-            background: var(--border);
-        }
-
-        .org-hierarchies {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .org-hierarchies-line {
-            width: 40px;
-            height: 2px;
-            background: var(--border);
-            align-self: flex-start;
-            margin-top: 11px;
-        }
-
-        /* Tree View */
-        .tree-view {
-            padding: 80px 48px;
-            background: var(--bg-secondary);
-        }
-
-        .tree-view h2 {
-            text-align: center;
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 48px;
-        }
-
-        .tree-container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 32px;
-        }
-
-        .tree-item {
+        .agent-status {
             display: flex;
             align-items: center;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+        }
+
+        .status-dot.offline { background: var(--text-muted); }
+        .status-dot.busy { background: var(--warning); }
+
+        .status-text {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .agent-stats {
+            display: flex;
             gap: 12px;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 4px;
-            background: var(--bg-tertiary);
-            font-size: 14px;
+            margin-bottom: 12px;
         }
 
-        .tree-item.mission { background: rgba(124, 92, 255, 0.2); }
-        .tree-item.project { background: rgba(74, 222, 128, 0.15); }
-        .tree-item.agent { background: rgba(251, 191, 36, 0.1); }
-        .tree-item.task { background: var(--bg-card); border: 1px solid var(--border); }
-
-        .tree-icon {
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-        }
-
-        .tree-label {
+        .agent-stat {
             flex: 1;
-            font-weight: 500;
+            text-align: center;
+            padding: 8px;
+            background: var(--bg-tertiary);
+            border-radius: 6px;
         }
 
-        .tree-type {
-            font-size: 11px;
+        .agent-stat-value {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .agent-stat-label {
+            font-size: 10px;
             color: var(--text-muted);
             text-transform: uppercase;
         }
 
-        /* Heartbeats */
-        .heartbeats {
-            padding: 120px 48px;
-            max-width: 1200px;
-            margin: 0 auto;
+        .agent-budget {
+            margin-bottom: 12px;
         }
 
-        .heartbeats h2 {
-            text-align: center;
-            font-size: 32px;
-            font-weight: 600;
-            margin-bottom: 16px;
+        .budget-bar {
+            height: 4px;
+            background: var(--bg-tertiary);
+            border-radius: 2px;
+            overflow: hidden;
         }
 
-        .heartbeats > p {
-            text-align: center;
+        .budget-fill {
+            height: 100%;
+            background: var(--accent);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        .budget-fill.warning { background: var(--warning); }
+        .budget-fill.danger { background: var(--danger); }
+
+        .budget-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .agent-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .agent-action-btn {
+            flex: 1;
+            padding: 8px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
             color: var(--text-secondary);
-            margin-bottom: 48px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
+        .agent-action-btn:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--text-primary);
+        }
+
+        .agent-action-btn.danger:hover {
+            background: var(--danger);
+            border-color: var(--danger);
+        }
+
+        /* Task List */
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            transition: all 0.2s;
+        }
+
+        .task-item:hover {
+            border-color: var(--accent);
+        }
+
+        .task-item.completed {
+            opacity: 0.5;
+        }
+
+        .task-item.completed .task-title {
+            text-decoration: line-through;
+        }
+
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .task-checkbox:hover {
+            border-color: var(--accent);
+        }
+
+        .task-checkbox.checked {
+            background: var(--success);
+            border-color: var(--success);
+        }
+
+        .task-checkbox.checked::after {
+            content: '✓';
+            color: var(--bg-primary);
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .task-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .task-title {
+            font-size: 14px;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .task-meta {
+            display: flex;
+            gap: 12px;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .task-agent-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 8px;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .task-priority {
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .task-priority.high { background: rgba(248, 113, 113, 0.2); color: var(--danger); }
+        .task-priority.medium { background: rgba(251, 191, 36, 0.2); color: var(--warning); }
+        .task-priority.low { background: rgba(74, 222, 128, 0.2); color: var(--success); }
+
+        /* Heartbeat Cards */
         .heartbeat-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 16px;
         }
 
         .heartbeat-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 24px;
+            padding: 20px;
         }
 
         .heartbeat-header {
@@ -483,11 +560,11 @@
         }
 
         .heartbeat-schedule {
-            font-size: 12px;
-            color: var(--text-muted);
-            background: var(--bg-tertiary);
+            font-size: 11px;
             padding: 4px 8px;
+            background: var(--bg-tertiary);
             border-radius: 4px;
+            color: var(--text-muted);
         }
 
         .heartbeat-tasks {
@@ -497,44 +574,372 @@
         }
 
         .heartbeat-task {
-            font-size: 13px;
-            color: var(--text-secondary);
-            padding: 8px 12px;
+            padding: 10px 12px;
             background: var(--bg-tertiary);
             border-radius: 6px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .heartbeat-task.urgent {
-            border-left: 2px solid var(--warning);
-            color: var(--warning);
+        .heartbeat-task.completed {
+            text-decoration: line-through;
+            opacity: 0.5;
         }
 
-        /* Cost Tracking */
-        .costs {
-            padding: 120px 48px;
-            background: var(--bg-secondary);
+        .heartbeat-task .check {
+            width: 16px;
+            height: 16px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
         }
 
-        .costs h2 {
-            text-align: center;
-            font-size: 24px;
+        .heartbeat-task .check.checked {
+            background: var(--success);
+            border-color: var(--success);
+        }
+
+        /* Ticket System */
+        .ticket-thread {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            max-width: 700px;
+        }
+
+        .ticket-message {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            gap: 12px;
+        }
+
+        .ticket-message:last-child { border-bottom: none; }
+
+        .ticket-avatar {
+            width: 32px;
+            height: 32px;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 16px;
+        }
+
+        .ticket-content { flex: 1; }
+
+        .ticket-header {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+
+        .ticket-author {
             font-weight: 600;
-            margin-bottom: 48px;
+            font-size: 13px;
         }
 
+        .ticket-time {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .ticket-text {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .ticket-trace {
+            background: var(--bg-tertiary);
+            padding: 14px 20px;
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 11px;
+        }
+
+        .ticket-trace-title {
+            font-size: 10px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .ticket-trace-item {
+            color: var(--success);
+            padding: 2px 0;
+        }
+
+        .ticket-input {
+            display: flex;
+            gap: 12px;
+            padding: 16px 20px;
+            background: var(--bg-tertiary);
+        }
+
+        .ticket-input input {
+            flex: 1;
+            padding: 10px 14px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 13px;
+        }
+
+        .ticket-input input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .ticket-input button {
+            padding: 10px 16px;
+            background: var(--accent);
+            border: none;
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .ticket-input button:hover {
+            background: var(--accent-hover);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            width: 480px;
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            background: var(--bg-tertiary);
+            border: none;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .modal-close:hover {
+            background: var(--danger);
+            color: var(--text-primary);
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px 14px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        select.form-input {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23888' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 36px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 24px;
+        }
+
+        .form-btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .form-btn.secondary {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+
+        .form-btn.primary {
+            background: var(--accent);
+            border: none;
+            color: var(--text-primary);
+        }
+
+        .form-btn.primary:hover {
+            background: var(--accent-hover);
+        }
+
+        /* Org Chart */
+        .org-chart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .org-level {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .org-node {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 180px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .org-node:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .org-node.ceo {
+            background: linear-gradient(135deg, var(--bg-card) 0%, rgba(124, 92, 255, 0.15) 100%);
+            border-color: var(--accent);
+            min-width: 220px;
+        }
+
+        .org-node-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .org-node.ceo .org-node-icon { background: var(--accent); }
+
+        .org-node-info h4 {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .org-node-info span {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .org-connector {
+            width: 2px;
+            height: 20px;
+            background: var(--border);
+        }
+
+        .org-hierarchies {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .org-hierarchies-line {
+            width: 36px;
+            height: 2px;
+            background: var(--border);
+            align-self: flex-start;
+            margin-top: 9px;
+        }
+
+        /* Cost Dashboard */
         .cost-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 16px;
-            max-width: 1000px;
-            margin: 0 auto;
         }
 
         .cost-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 20px;
+            padding: 18px;
         }
 
         .cost-card.total {
@@ -551,18 +956,19 @@
 
         .cost-name {
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .cost-badge {
-            font-size: 11px;
-            padding: 2px 8px;
+            font-size: 10px;
+            padding: 2px 6px;
             border-radius: 4px;
             background: var(--bg-tertiary);
+            color: var(--text-muted);
         }
 
         .cost-amount {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 700;
             margin-bottom: 8px;
         }
@@ -583,715 +989,693 @@
             height: 100%;
             background: var(--accent);
             border-radius: 2px;
-            transition: width 0.3s ease;
         }
 
-        /* Ticket System */
-        .tickets {
-            padding: 120px 48px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
+        .cost-bar-fill.warning { background: var(--warning); }
+        .cost-bar-fill.danger { background: var(--danger); }
 
-        .tickets h2 {
+        /* Empty State */
+        .empty-state {
             text-align: center;
-            font-size: 32px;
-            font-weight: 600;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+
+        .empty-state .icon {
+            font-size: 48px;
             margin-bottom: 16px;
         }
 
-        .tickets > p {
-            text-align: center;
+        .empty-state h3 {
+            font-size: 16px;
             color: var(--text-secondary);
-            margin-bottom: 48px;
-        }
-
-        .ticket-thread {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            overflow: hidden;
-        }
-
-        .ticket-message {
-            padding: 20px 24px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            gap: 16px;
-        }
-
-        .ticket-message:last-child {
-            border-bottom: none;
-        }
-
-        .ticket-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-            background: var(--bg-tertiary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .ticket-content {
-            flex: 1;
-        }
-
-        .ticket-header {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            margin-bottom: 4px;
-        }
-
-        .ticket-author {
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .ticket-time {
-            font-size: 12px;
-            color: var(--text-muted);
-        }
-
-        .ticket-text {
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-
-        .ticket-trace {
-            background: var(--bg-tertiary);
-            padding: 16px 24px;
-            font-family: 'SF Mono', Monaco, monospace;
-            font-size: 12px;
-        }
-
-        .ticket-trace-title {
-            font-size: 11px;
-            text-transform: uppercase;
-            color: var(--text-muted);
             margin-bottom: 8px;
         }
 
-        .ticket-trace-item {
-            color: var(--success);
-            padding: 2px 0;
-        }
-
-        /* FAQ */
-        .faq {
-            padding: 120px 48px;
-            background: var(--bg-secondary);
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .faq h2 {
-            text-align: center;
-            font-size: 32px;
-            font-weight: 600;
-            margin-bottom: 48px;
-        }
-
-        .faq-item {
-            border-bottom: 1px solid var(--border);
-            padding: 24px 0;
-        }
-
-        .faq-item:last-child {
-            border-bottom: none;
-        }
-
-        .faq-question {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: var(--text-primary);
-        }
-
-        .faq-answer {
+        .empty-state p {
             font-size: 14px;
-            color: var(--text-secondary);
-            line-height: 1.7;
-        }
-
-        /* Footer */
-        footer {
-            padding: 80px 48px;
-            text-align: center;
-        }
-
-        footer h2 {
-            font-size: 32px;
-            font-weight: 600;
-            margin-bottom: 16px;
-        }
-
-        footer p {
-            color: var(--text-secondary);
-            margin-bottom: 24px;
-        }
-
-        .footer-cta {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            background: var(--text-primary);
-            color: var(--bg-primary);
-            padding: 16px 32px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.2s;
-        }
-
-        .footer-cta:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 32px rgba(124, 92, 255, 0.3);
-        }
-
-        .footer-note {
-            margin-top: 16px;
-            font-size: 12px;
-            color: var(--text-muted);
-        }
-
-        /* Control Panel (Interactive) */
-        .control-panel {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 16px;
-            z-index: 200;
-        }
-
-        .control-panel-title {
-            font-size: 12px;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            margin-bottom: 12px;
-        }
-
-        .control-buttons {
-            display: flex;
-            gap: 8px;
-        }
-
-        .control-btn {
-            width: 40px;
-            height: 40px;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .control-btn:hover {
-            background: var(--accent);
-            border-color: var(--accent);
         }
 
         /* Responsive */
         @media (max-width: 768px) {
-            header {
-                padding: 12px 24px;
-            }
-
-            nav {
-                display: none;
-            }
-
-            .hero {
-                padding: 120px 24px 60px;
-            }
-
-            .hero h1 {
-                font-size: 36px;
-            }
-
-            .hero h1 span {
-                font-size: 28px;
-            }
-
-            .hero p {
-                font-size: 16px;
-            }
-
-            .steps {
-                grid-template-columns: 1fr;
-                gap: 32px;
-            }
-
-            .testimonials,
-            .how-it-works,
-            .features,
-            .org-demo,
-            .tree-view,
-            .heartbeats,
-            .costs,
-            .tickets,
-            .faq,
-            footer {
-                padding: 80px 24px;
-            }
-
-            .org-node {
-                min-width: 160px;
-                padding: 12px 16px;
-            }
-
-            .org-node.ceo {
-                min-width: 180px;
-            }
+            .sidebar { display: none; }
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+            .agents-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="logo">
-            <div class="logo-icon">🐙</div>
-            <span>Agent Network</span>
-        </div>
-        <nav>
-            <a href="#features">Features</a>
-            <a href="#how-it-works">How it works</a>
-            <a href="#pricing">Pricing</a>
-            <a href="https://github.com/JoaoPTCastro/agent-network" target="_blank" class="nav-cta">Open Source</a>
-        </nav>
-    </header>
-
-    <!-- Hero -->
-    <section class="hero">
-        <h1>A team of agents<br>for every person.<span>🐙 Powered by João</span></h1>
-        <p>Agent Network is the app you use to manage AI agents for work. Build your autonomous company.</p>
-        <a href="https://github.com/JoaoPTCastro/agent-network" target="_blank" class="hero-cta">
-            <span>🚀</span>
-            <span>Get started — it's free</span>
-        </a>
-    </section>
-
-    <!-- Testimonials -->
-    <section class="testimonials">
-        <h2>What people are saying</h2>
-        <div class="testimonials-grid">
-            <div class="testimonial">"I've never seen an agent orchestration system that operates across all business functions"</div>
-            <div class="testimonial">"Paperclip seems to be special — no agent tie in either. Design and UX quality like Linear etc"</div>
-            <div class="testimonial">"Great for orchestrating agents to do dev, content, social, marketing, QA, research, and anything else for an autonomous biz"</div>
-            <div class="testimonial">"Been using it and works great!"</div>
-            <div class="testimonial">"OpenClaw is an employee, Agent Network is the company"</div>
-            <div class="testimonial">"This is awesome! This replaces my mission control"</div>
-        </div>
-    </section>
-
-    <!-- How It Works -->
-    <section class="how-it-works" id="how-it-works">
-        <h2>How it works</h2>
-        <div class="steps">
-            <div class="step">
-                <div class="step-number">01</div>
-                <h3>Define the goal.</h3>
-                <p>"Build the #1 AI note-taking app to $1M ARR."</p>
-            </div>
-            <div class="step">
-                <div class="step-number">02</div>
-                <h3>Hire the team.</h3>
-                <p>CEO, CTO, engineers, designers, marketers — any agent, any provider.</p>
-            </div>
-            <div class="step">
-                <div class="step-number">03</div>
-                <h3>Approve and run.</h3>
-                <p>Review the CEO's strategy. Set budgets. Hit go. Monitor from the dashboard.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Features -->
-    <section class="features" id="features">
-        <div class="features-grid">
-            <div class="feature">
-                <div class="feature-icon">🌐</div>
-                <h3>Bring Your Own Agent</h3>
-                <p>Any agent, any runtime, one org chart. If it can receive a heartbeat, it's hired.</p>
-            </div>
-            <div class="feature">
-                <div class="feature-icon">📊</div>
-                <h3>Org Chart</h3>
-                <p>Hierarchies, roles, reporting lines. Your agents have a boss, a title, and a job description.</p>
-            </div>
-            <div class="feature">
-                <div class="feature-icon">🎯</div>
-                <h3>Goal Alignment</h3>
-                <p>Every task traces back to the mission. Agents know what to do and why.</p>
-            </div>
-            <div class="feature">
-                <div class="feature-icon">💰</div>
-                <h3>Cost Control</h3>
-                <p>Monthly budgets per agent. When they hit the limit, they stop. No runaway costs.</p>
-            </div>
-            <div class="feature">
-                <div class="feature-icon">🎫</div>
-                <h3>Ticket System</h3>
-                <p>Every conversation traced. Every decision explained. Full tool-call tracing and audit log.</p>
-            </div>
-            <div class="feature">
-                <div class="feature-icon">⚖️</div>
-                <h3>Governance</h3>
-                <p>You're in charge. Approve hires, override strategy, pause or terminate any agent at any time.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Org Chart Demo -->
-    <section class="org-demo">
-        <h2>Model-Agnostic</h2>
-        <p>Your agents, organized under one org structure, pointed at one goal.</p>
-        
-        <div class="org-chart-container">
-            <!-- CEO -->
-            <div class="org-node ceo">
-                <div class="org-node-icon">👤</div>
-                <div class="org-node-info">
-                    <h4>João</h4>
-                    <span>CEO — Fundador</span>
+    <div class="app">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <div class="icon">🐙</div>
+                    <span>Agent Network</span>
                 </div>
             </div>
+            <nav class="sidebar-nav">
+                <div class="nav-section-title">Dashboard</div>
+                <div class="nav-item active" data-view="overview">
+                    <span class="icon">📊</span>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-item" data-view="org">
+                    <span class="icon">🏢</span>
+                    <span>Org Chart</span>
+                </div>
+                <div class="nav-item" data-view="agents">
+                    <span class="icon">🤖</span>
+                    <span>Agents</span>
+                </div>
+                <div class="nav-item" data-view="tasks">
+                    <span class="icon">📋</span>
+                    <span>Tasks</span>
+                </div>
+                <div class="nav-item" data-view="heartbeats">
+                    <span class="icon">💓</span>
+                    <span>Heartbeats</span>
+                </div>
+                <div class="nav-item" data-view="costs">
+                    <span class="icon">💰</span>
+                    <span>Costs</span>
+                </div>
+                <div class="nav-item" data-view="tickets">
+                    <span class="icon">🎫</span>
+                    <span>Tickets</span>
+                </div>
+            </nav>
+            <div style="padding: 12px; border-top: 1px solid var(--border);">
+                <div class="nav-item" onclick="syncToGitHub()">
+                    <span class="icon">🔄</span>
+                    <span>Sync to GitHub</span>
+                </div>
+            </div>
+        </aside>
 
-            <div class="org-connector"></div>
-            <div class="org-hierarchies">
-                <div class="org-hierarchies-line"></div>
-                <div class="org-hierarchies-line"></div>
-                <div class="org-hierarchies-line"></div>
-                <div class="org-hierarchies-line"></div>
+        <!-- Main Content -->
+        <main class="main">
+            <header class="header">
+                <h1 class="header-title" id="pageTitle">Overview</h1>
+                <div class="header-actions">
+                    <button class="header-btn" onclick="openModal('addAgent')">
+                        <span>➕</span>
+                        <span>Add Agent</span>
+                    </button>
+                    <button class="header-btn primary" onclick="openModal('addTask')">
+                        <span>📋</span>
+                        <span>New Task</span>
+                    </button>
+                </div>
+            </header>
+            <div class="content" id="mainContent">
+                <!-- Content loaded dynamically -->
             </div>
+        </main>
+    </div>
 
-            <!-- Agent Level -->
-            <div class="org-level">
-                <div class="org-node">
-                    <div class="org-node-icon">🐙</div>
-                    <div class="org-node-info">
-                        <h4>B.K.</h4>
-                        <span>COO — Coordinator</span>
-                    </div>
-                </div>
-                <div class="org-node">
-                    <div class="org-node-icon">💻</div>
-                    <div class="org-node-info">
-                        <h4>Dev</h4>
-                        <span>CTO — Developer</span>
-                    </div>
-                </div>
-                <div class="org-node">
-                    <div class="org-node-icon">📣</div>
-                    <div class="org-node-info">
-                        <h4>Marketer</h4>
-                        <span>CMO — Marketing</span>
-                    </div>
-                </div>
-                <div class="org-node">
-                    <div class="org-node-icon">🔍</div>
-                    <div class="org-node-info">
-                        <h4>Researcher</h4>
-                        <span>CIO — Research</span>
-                    </div>
-                </div>
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Add Agent</h2>
+                <button class="modal-close" onclick="closeModal()">×</button>
             </div>
-        </div>
-    </section>
-
-    <!-- Tree View -->
-    <section class="tree-view">
-        <h2>Goal Alignment</h2>
-        <div class="tree-container">
-            <div class="tree-item mission">
-                <div class="tree-icon">◎</div>
-                <span class="tree-label">Mission: Sair da CLT, R$15K+/mês</span>
-                <span class="tree-type">Mission</span>
+            <div id="modalContent">
+                <!-- Form content -->
             </div>
-            <div class="tree-item project">
-                <div class="tree-icon">◉</div>
-                <span class="tree-label">Project: Agencia de Marketing</span>
-                <span class="tree-type">Project</span>
-            </div>
-            <div class="tree-item agent">
-                <div class="tree-icon">○</div>
-                <span class="tree-label">Agent: Criar copy para servicos</span>
-                <span class="tree-type">Agent Goal</span>
-            </div>
-            <div class="tree-item task">
-                <div class="tree-icon">•</div>
-                <span class="tree-label">Task: Definir servicos e precificacao</span>
-                <span class="tree-type">Task</span>
-            </div>
-        </div>
-    </section>
-
-    <!-- Heartbeats -->
-    <section class="heartbeats">
-        <h2>Heartbeats keep the lights on</h2>
-        <p>Agents wake up on a schedule, check their work, and act.</p>
-
-        <div class="heartbeat-grid">
-            <div class="heartbeat-card">
-                <div class="heartbeat-header">
-                    <div class="heartbeat-title">
-                        <span>📝</span>
-                        <span>Marketer</span>
-                    </div>
-                    <span class="heartbeat-schedule">every 4h</span>
-                </div>
-                <div class="heartbeat-tasks">
-                    <div class="heartbeat-task">Draft blog post</div>
-                    <div class="heartbeat-task">Edit copy</div>
-                    <div class="heartbeat-task">Write newsletter</div>
-                    <div class="heartbeat-task">Social captions</div>
-                </div>
-            </div>
-
-            <div class="heartbeat-card">
-                <div class="heartbeat-header">
-                    <div class="heartbeat-title">
-                        <span>🔍</span>
-                        <span>Researcher</span>
-                    </div>
-                    <span class="heartbeat-schedule">every 8h</span>
-                </div>
-                <div class="heartbeat-tasks">
-                    <div class="heartbeat-task">Market research</div>
-                    <div class="heartbeat-task">Competitive analysis</div>
-                    <div class="heartbeat-task">Trend monitoring</div>
-                    <div class="heartbeat-task">Lead insights</div>
-                </div>
-            </div>
-
-            <div class="heartbeat-card">
-                <div class="heartbeat-header">
-                    <div class="heartbeat-title">
-                        <span>💻</span>
-                        <span>Dev</span>
-                    </div>
-                    <span class="heartbeat-schedule">every 12h</span>
-                </div>
-                <div class="heartbeat-tasks">
-                    <div class="heartbeat-task">Code review</div>
-                    <div class="heartbeat-task">Deploy updates</div>
-                    <div class="heartbeat-task">Bug fixes</div>
-                    <div class="heartbeat-task urgent">⚠️ Urgent: API down</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Cost Tracking -->
-    <section class="costs">
-        <h2>Cost Control</h2>
-        <div class="cost-grid">
-            <div class="cost-card">
-                <div class="cost-header">
-                    <span class="cost-name">🐙 B.K.</span>
-                    <span class="cost-badge">COO</span>
-                </div>
-                <div class="cost-amount">$0 <span>/ $60</span></div>
-                <div class="cost-bar"><div class="cost-bar-fill" style="width: 0%"></div></div>
-            </div>
-            <div class="cost-card">
-                <div class="cost-header">
-                    <span class="cost-name">📣 Marketer</span>
-                    <span class="cost-badge">CMO</span>
-                </div>
-                <div class="cost-amount">$0 <span>/ $40</span></div>
-                <div class="cost-bar"><div class="cost-bar-fill" style="width: 0%"></div></div>
-            </div>
-            <div class="cost-card">
-                <div class="cost-header">
-                    <span class="cost-name">💻 Dev</span>
-                    <span class="cost-badge">CTO</span>
-                </div>
-                <div class="cost-amount">$0 <span>/ $50</span></div>
-                <div class="cost-bar"><div class="cost-bar-fill" style="width: 0%"></div></div>
-            </div>
-            <div class="cost-card">
-                <div class="cost-header">
-                    <span class="cost-name">🔍 Researcher</span>
-                    <span class="cost-badge">CIO</span>
-                </div>
-                <div class="cost-amount">$0 <span>/ $30</span></div>
-                <div class="cost-bar"><div class="cost-bar-fill" style="width: 0%"></div></div>
-            </div>
-            <div class="cost-card total">
-                <div class="cost-header">
-                    <span class="cost-name">Total Budget</span>
-                    <span class="cost-badge">All</span>
-                </div>
-                <div class="cost-amount">$0 <span>/ $240</span></div>
-                <div class="cost-bar"><div class="cost-bar-fill" style="width: 0%"></div></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Ticket System -->
-    <section class="tickets">
-        <h2>Ticket System</h2>
-        <p>Every conversation traced. Every decision explained.</p>
-
-        <div class="ticket-thread">
-            <div class="ticket-message">
-                <div class="ticket-avatar">👤</div>
-                <div class="ticket-content">
-                    <div class="ticket-header">
-                        <span class="ticket-author">João (CEO)</span>
-                        <span class="ticket-time">2 min ago</span>
-                    </div>
-                    <div class="ticket-text">Deploy the updated pricing page to production. Run tests first.</div>
-                </div>
-            </div>
-            <div class="ticket-message">
-                <div class="ticket-avatar">💻</div>
-                <div class="ticket-content">
-                    <div class="ticket-header">
-                        <span class="ticket-author">Dev (CTO)</span>
-                        <span class="ticket-time">1 min ago</span>
-                    </div>
-                    <div class="ticket-text">Running test suite and staging deployment now. I'll promote to production once smoke tests pass.</div>
-                </div>
-            </div>
-            <div class="ticket-message">
-                <div class="ticket-avatar">👤</div>
-                <div class="ticket-content">
-                    <div class="ticket-header">
-                        <span class="ticket-author">João (CEO)</span>
-                        <span class="ticket-time">just now</span>
-                    </div>
-                    <div class="ticket-text">Approved. Go ahead.</div>
-                </div>
-            </div>
-            <div class="ticket-trace">
-                <div class="ticket-trace-title">Trace</div>
-                <div class="ticket-trace-item">✓ run_tests() passed</div>
-                <div class="ticket-trace-item">✓ deploy_to_staging() done</div>
-                <div class="ticket-trace-item">✓ smoke_test() passed</div>
-                <div class="ticket-trace-item">→ deploy_to_production() running...</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Governance -->
-    <section class="features">
-        <div class="features-grid">
-            <div class="feature">
-                <div class="feature-icon">⏸️</div>
-                <h3>Pause</h3>
-                <p>Stop an agent temporarily without losing context.</p>
-            </div>
-            <div class="feature">
-                <div class="feature-icon">▶️</div>
-                <h3>Resume</h3>
-                <p>Get an agent back online with full memory.</p>
-            </div>
-            <div class="feature">
-                <div class="feature-icon">🔄</div>
-                <h3>Override</h3>
-                <p>Take control and direct the strategy yourself.</p>
-            </div>
-            <div class="feature">
-                <div class="feature-icon">🔁</div>
-                <h3>Reassign</h3>
-                <p>Move tasks between agents seamlessly.</p>
-            </div>
-            <div class="feature">
-                <div class="feature-icon">⛔</div>
-                <h3>Terminate</h3>
-                <p>Stop an agent permanently if needed.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- FAQ -->
-    <section class="faq">
-        <h2>FAQ</h2>
-        <div class="faq-item">
-            <div class="faq-question">How is Agent Network different from agents like OpenClaw?</div>
-            <div class="faq-answer">Agent Network uses those agents. It orchestrates them into a team — with org charts, budgets, goals, governance, and accountability.</div>
-        </div>
-        <div class="faq-item">
-            <div class="faq-question">Can I use my existing agents?</div>
-            <div class="faq-answer">Yes. Agent Network is unopinionated about agent runtimes. Your agents can be OpenClaw bots, Claude sessions, Python scripts, shell commands, HTTP webhooks — anything that can receive a heartbeat signal.</div>
-        </div>
-        <div class="faq-item">
-            <div class="faq-question">What happens when an agent hits its budget limit?</div>
-            <div class="faq-answer">At 100% budget utilization the agent auto-pauses and new tasks are blocked. You get a soft warning at 80%. As the board, you can override the limit at any time and resume the agent.</div>
-        </div>
-        <div class="faq-item">
-            <div class="faq-question">How do I keep agents from doing things I don't want?</div>
-            <div class="faq-answer">Agent Network has governance and control modules. Hiring new agents is gated by Board approval by default. You have full control over every agent in the org.</div>
-        </div>
-        <div class="faq-item">
-            <div class="faq-question">Why should I use this instead of just using OpenClaw?</div>
-            <div class="faq-answer">Agent orchestration has subtleties in how you coordinate who has work checked out, how to maintain sessions, monitoring costs, establishing governance — Agent Network does this for you.</div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <h2>Hire a team of agents today.</h2>
-        <p>Open source. Self-hosted. No account required.</p>
-        <a href="https://github.com/JoaoPTCastro/agent-network" target="_blank" class="footer-cta">
-            <span>🐙</span>
-            <span>View on GitHub</span>
-        </a>
-        <p class="footer-note">João Pedro Theotônio de Castro • 2026</p>
-    </footer>
-
-    <!-- Control Panel -->
-    <div class="control-panel">
-        <div class="control-panel-title">Quick Actions</div>
-        <div class="control-buttons">
-            <div class="control-btn" title="Add Agent" onclick="alert('Add Agent - Coming soon!')">➕</div>
-            <div class="control-btn" title="New Task" onclick="alert('New Task - Coming soon!')">📋</div>
-            <div class="control-btn" title="Settings" onclick="alert('Settings - Coming soon!')">⚙️</div>
         </div>
     </div>
 
     <script>
-        // Scroll animations
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
+        // ===== DATA =====
+        let data = {
+            mission: "Sair da CLT, alcançar R$15K+/mês, aposentadoria aos 35",
+            agents: [
+                { id: 'ceo', name: 'João', role: 'CEO — Fundador', icon: '👤', type: 'ceo', status: 'online', tasks: 3, budget: 0, budgetLimit: 0 },
+                { id: 'bk', name: 'B.K.', role: 'COO — Coordinator', icon: '🐙', type: 'bk', status: 'online', tasks: 5, budget: 0, budgetLimit: 60 },
+                { id: 'dev', name: 'Dev', role: 'CTO — Developer', icon: '💻', type: 'agent', status: 'offline', tasks: 0, budget: 0, budgetLimit: 50 },
+                { id: 'marketer', name: 'Marketer', role: 'CMO — Marketing', icon: '📣', type: 'agent', status: 'offline', tasks: 0, budget: 0, budgetLimit: 40 },
+                { id: 'researcher', name: 'Researcher', role: 'CIO — Research', icon: '🔍', type: 'agent', status: 'offline', tasks: 0, budget: 0, budgetLimit: 30 }
+            ],
+            tasks: [
+                { id: 1, title: 'Definir primeira automação da loja', agent: 'bk', priority: 'high', completed: false, project: 'Loja Rifa' },
+                { id: 2, title: 'Mapear processos manuais da loja', agent: 'researcher', priority: 'medium', completed: false, project: 'Loja Rifa' },
+                { id: 3, title: 'Criar copy para serviços da agência', agent: 'marketer', priority: 'medium', completed: false, project: 'Agência' },
+                { id: 4, title: 'Conectar GitHub ao OpenClaw', agent: 'bk', priority: 'high', completed: true, project: 'Infra' },
+                { id: 5, title: 'Validar ideia de MVP (SaaS)', agent: 'researcher', priority: 'high', completed: false, project: 'SaaS' }
+            ],
+            heartbeats: [
+                { id: 1, agent: 'Marketer', schedule: '4h', tasks: ['Draft blog post', 'Edit copy', 'Write newsletter', 'Social captions'], completed: [false, false, false, false] },
+                { id: 2, agent: 'Researcher', schedule: '8h', tasks: ['Market research', 'Competitive analysis', 'Trend monitoring'], completed: [false, false, false] },
+                { id: 3, agent: 'Dev', schedule: '12h', tasks: ['Code review', 'Deploy updates', 'Bug fixes'], completed: [false, false, false] }
+            ],
+            tickets: [
+                { id: 1, author: 'João', avatar: '👤', time: '2 min ago', text: 'Deploy the updated pricing page to production. Run tests first.', type: 'user' },
+                { id: 2, author: 'Dev', avatar: '💻', time: '1 min ago', text: 'Running test suite and staging deployment now. I\'ll promote to production once smoke tests pass.', type: 'agent' },
+                { id: 3, author: 'João', avatar: '👤', time: 'just now', text: 'Approved. Go ahead.', type: 'user', trace: true }
+            ]
+        };
+
+        // Load from localStorage
+        if (localStorage.getItem('agentNetwork')) {
+            try {
+                data = JSON.parse(localStorage.getItem('agentNetwork'));
+            } catch (e) {}
+        }
+
+        // Save to localStorage
+        function saveData() {
+            localStorage.setItem('agentNetwork', JSON.stringify(data));
+        }
+
+        // ===== VIEWS =====
+        let currentView = 'overview';
+
+        function renderView(view) {
+            currentView = view;
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.toggle('active', item.dataset.view === view);
+            });
+            document.getElementById('pageTitle').textContent = view.charAt(0).toUpperCase() + view.slice(1);
+
+            const content = document.getElementById('mainContent');
+            switch(view) {
+                case 'overview': content.innerHTML = renderOverview(); break;
+                case 'org': content.innerHTML = renderOrg(); break;
+                case 'agents': content.innerHTML = renderAgents(); break;
+                case 'tasks': content.innerHTML = renderTasks(); break;
+                case 'heartbeats': content.innerHTML = renderHeartbeats(); break;
+                case 'costs': content.innerHTML = renderCosts(); break;
+                case 'tickets': content.innerHTML = renderTickets(); break;
+            }
+        }
+
+        function renderOverview() {
+            const completedTasks = data.tasks.filter(t => t.completed).length;
+            const totalBudget = data.agents.reduce((sum, a) => sum + a.budget, 0);
+            const totalBudgetLimit = data.agents.reduce((sum, a) => sum + a.budgetLimit, 0);
+
+            return `
+                <div class="mission-banner" onclick="editMission()">
+                    <div class="mission-label">🎯 Mission</div>
+                    <div class="mission-text">${data.mission}</div>
+                    <div class="mission-edit">
+                        <input type="text" value="${data.mission}" onblur="saveMission(this.value)" onkeydown="if(event.key==='Enter')saveMission(this.value)">
+                    </div>
+                </div>
+
+                <div class="stats-row">
+                    <div class="stat-card">
+                        <div class="stat-value">${data.agents.length}</div>
+                        <div class="stat-label">Agents</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${data.tasks.length}</div>
+                        <div class="stat-label">Tasks</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${completedTasks}/${data.tasks.length}</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">$${totalBudget}<span style="opacity:0.5">/$${totalBudgetLimit}</span></div>
+                        <div class="stat-label">Budget</div>
+                    </div>
+                </div>
+
+                <h2 style="margin-bottom:16px">📋 Recent Tasks</h2>
+                <div class="task-list">
+                    ${data.tasks.slice(0, 5).map(task => `
+                        <div class="task-item ${task.completed ? 'completed' : ''}">
+                            <div class="task-checkbox ${task.completed ? 'checked' : ''}" onclick="toggleTask(${task.id})"></div>
+                            <div class="task-content">
+                                <div class="task-title">${task.title}</div>
+                                <div class="task-meta">
+                                    <span class="task-agent-badge">${getAgent(task.agent).icon} ${task.agent}</span>
+                                    <span class="task-priority ${task.priority}">${task.priority}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function renderOrg() {
+            return `
+                <h2 style="margin-bottom:24px">🏢 Organization Chart</h2>
+                <div class="org-chart">
+                    <div class="org-level">
+                        <div class="org-node ceo" onclick="openAgentModal('ceo')">
+                            <div class="org-node-icon">👤</div>
+                            <div class="org-node-info">
+                                <h4>João</h4>
+                                <span>CEO — Fundador</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="org-connector"></div>
+                    <div class="org-hierarchies">
+                        <div class="org-hierarchies-line"></div>
+                        <div class="org-hierarchies-line"></div>
+                        <div class="org-hierarchies-line"></div>
+                        <div class="org-hierarchies-line"></div>
+                    </div>
+                    <div class="org-level">
+                        ${data.agents.filter(a => a.id !== 'ceo').map(agent => `
+                            <div class="org-node" onclick="openAgentModal('${agent.id}')">
+                                <div class="org-node-icon">${agent.icon}</div>
+                                <div class="org-node-info">
+                                    <h4>${agent.name}</h4>
+                                    <span>${agent.role}</span>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderAgents() {
+            return `
+                <div class="agents-grid">
+                    ${data.agents.map(agent => `
+                        <div class="agent-card ${agent.id === 'ceo' ? 'ceo' : ''} ${agent.id === 'bk' ? 'bk' : ''}" onclick="openAgentModal('${agent.id}')">
+                            <div class="agent-header">
+                                <div class="agent-avatar">${agent.icon}</div>
+                                <div class="agent-info">
+                                    <h3>${agent.name}</h3>
+                                    <div class="role">${agent.role}</div>
+                                </div>
+                            </div>
+                            <div class="agent-status">
+                                <span class="status-dot ${agent.status}"></span>
+                                <span class="status-text">${agent.status === 'online' ? 'Online' : agent.status === 'busy' ? 'Busy' : 'Offline'}</span>
+                            </div>
+                            <div class="agent-stats">
+                                <div class="agent-stat">
+                                    <div class="agent-stat-value">${agent.tasks}</div>
+                                    <div class="agent-stat-label">Tasks</div>
+                                </div>
+                                <div class="agent-stat">
+                                    <div class="agent-stat-value">$${agent.budget}</div>
+                                    <div class="agent-stat-label">Spent</div>
+                                </div>
+                            </div>
+                            <div class="agent-budget">
+                                <div class="budget-bar">
+                                    <div class="budget-fill ${getBudgetClass(agent)}" style="width: ${getBudgetPercent(agent)}%"></div>
+                                </div>
+                                <div class="budget-text">
+                                    <span>Budget</span>
+                                    <span>$${agent.budget}/$${agent.budgetLimit}</span>
+                                </div>
+                            </div>
+                            <div class="agent-actions" onclick="event.stopPropagation()">
+                                <button class="agent-action-btn" onclick="toggleAgentStatus('${agent.id}')">
+                                    ${agent.status === 'offline' ? '▶️ Start' : '⏸️ Pause'}
+                                </button>
+                                <button class="agent-action-btn danger" onclick="deleteAgent('${agent.id}')">🗑️</button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function renderTasks() {
+            return `
+                <div class="task-list">
+                    ${data.tasks.map(task => `
+                        <div class="task-item ${task.completed ? 'completed' : ''}">
+                            <div class="task-checkbox ${task.completed ? 'checked' : ''}" onclick="toggleTask(${task.id})"></div>
+                            <div class="task-content">
+                                <div class="task-title">${task.title}</div>
+                                <div class="task-meta">
+                                    <span class="task-agent-badge">${getAgent(task.agent).icon} ${task.agent}</span>
+                                    <span>${task.project}</span>
+                                    <span class="task-priority ${task.priority}">${task.priority}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                ${data.tasks.length === 0 ? `
+                    <div class="empty-state">
+                        <div class="icon">📋</div>
+                        <h3>No tasks yet</h3>
+                        <p>Click "New Task" to create your first task.</p>
+                    </div>
+                ` : ''}
+            `;
+        }
+
+        function renderHeartbeats() {
+            return `
+                <div class="heartbeat-grid">
+                    ${data.heartbeats.map(hb => `
+                        <div class="heartbeat-card">
+                            <div class="heartbeat-header">
+                                <div class="heartbeat-title">
+                                    <span>${getAgent(hb.agent.toLowerCase()).icon}</span>
+                                    <span>${hb.agent}</span>
+                                </div>
+                                <span class="heartbeat-schedule">every ${hb.schedule}</span>
+                            </div>
+                            <div class="heartbeat-tasks">
+                                ${hb.tasks.map((task, i) => `
+                                    <div class="heartbeat-task ${hb.completed[i] ? 'completed' : ''}">
+                                        <div class="check ${hb.completed[i] ? 'checked' : ''}" onclick="toggleHeartbeatTask(${hb.id}, ${i})"></div>
+                                        <span>${task}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function renderCosts() {
+            const totalBudget = data.agents.reduce((sum, a) => sum + a.budget, 0);
+            const totalBudgetLimit = data.agents.reduce((sum, a) => sum + a.budgetLimit, 0);
+
+            return `
+                <div class="cost-grid">
+                    ${data.agents.map(agent => `
+                        <div class="cost-card ${agent.id === 'bk' ? 'total' : ''}">
+                            <div class="cost-header">
+                                <span class="cost-name">${agent.icon} ${agent.name}</span>
+                                <span class="cost-badge">${agent.role.split('—')[0].trim()}</span>
+                            </div>
+                            <div class="cost-amount">$${agent.budget} <span>/ $${agent.budgetLimit}</span></div>
+                            <div class="cost-bar">
+                                <div class="cost-bar-fill ${getBudgetClass(agent)}" style="width: ${getBudgetPercent(agent)}%"></div>
+                            </div>
+                        </div>
+                    `).join('')}
+                    <div class="cost-card total">
+                        <div class="cost-header">
+                            <span class="cost-name">💰 Total Budget</span>
+                            <span class="cost-badge">All</span>
+                        </div>
+                        <div class="cost-amount">$${totalBudget} <span>/ $${totalBudgetLimit}</span></div>
+                        <div class="cost-bar">
+                            <div class="cost-bar-fill" style="width: ${totalBudgetLimit > 0 ? (totalBudget / totalBudgetLimit * 100) : 0}%"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderTickets() {
+            return `
+                <div class="ticket-thread">
+                    ${data.tickets.map(ticket => `
+                        ${ticket.trace ? `
+                            <div class="ticket-trace">
+                                <div class="ticket-trace-title">Trace</div>
+                                <div class="ticket-trace-item">✓ run_tests() passed</div>
+                                <div class="ticket-trace-item">✓ deploy_to_staging() done</div>
+                                <div class="ticket-trace-item">✓ smoke_test() passed</div>
+                                <div class="ticket-trace-item">→ deploy_to_production() running...</div>
+                            </div>
+                        ` : ''}
+                        <div class="ticket-message">
+                            <div class="ticket-avatar">${ticket.avatar}</div>
+                            <div class="ticket-content">
+                                <div class="ticket-header">
+                                    <span class="ticket-author">${ticket.author}</span>
+                                    <span class="ticket-time">${ticket.time}</span>
+                                </div>
+                                <div class="ticket-text">${ticket.text}</div>
+                            </div>
+                        </div>
+                    `).join('')}
+                    <div class="ticket-input">
+                        <input type="text" placeholder="Type a message..." id="ticketInput" onkeydown="if(event.key==='Enter')sendTicket()">
+                        <button onclick="sendTicket()">Send</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ===== HELPER FUNCTIONS =====
+        function getAgent(id) {
+            return data.agents.find(a => a.id === id) || { icon: '🤖', name: id };
+        }
+
+        function getBudgetPercent(agent) {
+            if (agent.budgetLimit === 0) return 0;
+            return Math.min(100, (agent.budget / agent.budgetLimit) * 100);
+        }
+
+        function getBudgetClass(agent) {
+            const percent = getBudgetPercent(agent);
+            if (percent >= 100) return 'danger';
+            if (percent >= 80) return 'warning';
+            return '';
+        }
+
+        // ===== ACTIONS =====
+        function toggleTask(taskId) {
+            const task = data.tasks.find(t => t.id === taskId);
+            if (task) {
+                task.completed = !task.completed;
+                saveData();
+                renderView(currentView);
+            }
+        }
+
+        function toggleHeartbeatTask(heartbeatId, taskIndex) {
+            const hb = data.heartbeats.find(h => h.id === heartbeatId);
+            if (hb) {
+                hb.completed[taskIndex] = !hb.completed[taskIndex];
+                saveData();
+                renderView(currentView);
+            }
+        }
+
+        function toggleAgentStatus(agentId) {
+            const agent = data.agents.find(a => a.id === agentId);
+            if (agent && agent.id !== 'ceo') {
+                agent.status = agent.status === 'offline' ? 'online' : 'offline';
+                saveData();
+                renderView(currentView);
+            }
+        }
+
+        function deleteAgent(agentId) {
+            if (agentId === 'ceo' || agentId === 'bk') {
+                alert('Cannot delete CEO or B.K.');
+                return;
+            }
+            if (confirm('Delete this agent?')) {
+                data.agents = data.agents.filter(a => a.id !== agentId);
+                saveData();
+                renderView(currentView);
+            }
+        }
+
+        function editMission() {
+            document.querySelector('.mission-banner').classList.add('editing');
+            document.querySelector('.mission-edit input').focus();
+        }
+
+        function saveMission(value) {
+            data.mission = value;
+            document.querySelector('.mission-banner').classList.remove('editing');
+            document.querySelector('.mission-text').textContent = value;
+            saveData();
+        }
+
+        function sendTicket() {
+            const input = document.getElementById('ticketInput');
+            if (input.value.trim()) {
+                data.tickets.push({
+                    id: data.tickets.length + 1,
+                    author: 'João',
+                    avatar: '👤',
+                    time: 'just now',
+                    text: input.value.trim(),
+                    type: 'user'
+                });
+                input.value = '';
+                saveData();
+                renderView(currentView);
+            }
+        }
+
+        // ===== MODALS =====
+        function openModal(type) {
+            const overlay = document.getElementById('modalOverlay');
+            const title = document.getElementById('modalTitle');
+            const content = document.getElementById('modalContent');
+
+            if (type === 'addAgent') {
+                title.textContent = 'Add Agent';
+                content.innerHTML = `
+                    <div class="form-group">
+                        <label class="form-label">Name</label>
+                        <input type="text" class="form-input" id="agentName" placeholder="Agent name">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Role</label>
+                        <input type="text" class="form-input" id="agentRole" placeholder="CTO — Developer">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Icon</label>
+                        <input type="text" class="form-input" id="agentIcon" placeholder="💻" maxlength="2">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Budget Limit ($)</label>
+                        <input type="number" class="form-input" id="agentBudget" placeholder="50" value="50">
+                    </div>
+                    <div class="form-actions">
+                        <button class="form-btn secondary" onclick="closeModal()">Cancel</button>
+                        <button class="form-btn primary" onclick="addAgent()">Add Agent</button>
+                    </div>
+                `;
+            } else if (type === 'addTask') {
+                title.textContent = 'New Task';
+                content.innerHTML = `
+                    <div class="form-group">
+                        <label class="form-label">Title</label>
+                        <input type="text" class="form-input" id="taskTitle" placeholder="Task description">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Assign to</label>
+                        <select class="form-input" id="taskAgent">
+                            <option value="">Select agent</option>
+                            ${data.agents.map(a => `<option value="${a.id}">${a.icon} ${a.name}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Priority</label>
+                        <select class="form-input" id="taskPriority">
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Project</label>
+                        <input type="text" class="form-input" id="taskProject" placeholder="Project name">
+                    </div>
+                    <div class="form-actions">
+                        <button class="form-btn secondary" onclick="closeModal()">Cancel</button>
+                        <button class="form-btn primary" onclick="addTask()">Create Task</button>
+                    </div>
+                `;
+            }
+
+            overlay.classList.add('show');
+        }
+
+        function closeModal(event) {
+            if (!event || event.target.id === 'modalOverlay') {
+                document.getElementById('modalOverlay').classList.remove('show');
+            }
+        }
+
+        function addAgent() {
+            const name = document.getElementById('agentName').value;
+            const role = document.getElementById('agentRole').value;
+            const icon = document.getElementById('agentIcon').value || '🤖';
+            const budget = parseInt(document.getElementById('agentBudget').value) || 50;
+
+            if (!name) return alert('Please enter a name');
+
+            const id = name.toLowerCase().replace(/\s+/g, '-');
+            data.agents.push({ id, name, role, icon, type: 'agent', status: 'offline', tasks: 0, budget: 0, budgetLimit: budget });
+            saveData();
+            closeModal();
+            renderView('agents');
+        }
+
+        function addTask() {
+            const title = document.getElementById('taskTitle').value;
+            const agent = document.getElementById('taskAgent').value;
+            const priority = document.getElementById('taskPriority').value;
+            const project = document.getElementById('taskProject').value;
+
+            if (!title) return alert('Please enter a title');
+
+            const id = Date.now();
+            data.tasks.push({ id, title, agent: agent || 'bk', priority, completed: false, project: project || 'General' });
+
+            // Update agent task count
+            if (agent) {
+                const a = data.agents.find(x => x.id === agent);
+                if (a) a.tasks++;
+            }
+
+            saveData();
+            closeModal();
+            renderView(currentView);
+        }
+
+        function openAgentModal(agentId) {
+            const agent = data.agents.find(a => a.id === agentId);
+            if (!agent) return;
+
+            const overlay = document.getElementById('modalOverlay');
+            const title = document.getElementById('modalTitle');
+            const content = document.getElementById('modalContent');
+
+            title.textContent = agent.icon + ' ' + agent.name;
+            content.innerHTML = `
+                <div class="form-group">
+                    <label class="form-label">Name</label>
+                    <input type="text" class="form-input" id="editAgentName" value="${agent.name}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Role</label>
+                    <input type="text" class="form-input" id="editAgentRole" value="${agent.role}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Budget Limit</label>
+                    <input type="number" class="form-input" id="editAgentBudget" value="${agent.budgetLimit}">
+                </div>
+                <div class="form-actions">
+                    <button class="form-btn secondary" onclick="closeModal()">Cancel</button>
+                    <button class="form-btn primary" onclick="saveAgent('${agentId}')">Save</button>
+                </div>
+            `;
+
+            overlay.classList.add('show');
+        }
+
+        function saveAgent(agentId) {
+            const agent = data.agents.find(a => a.id === agentId);
+            if (agent) {
+                agent.name = document.getElementById('editAgentName').value;
+                agent.role = document.getElementById('editAgentRole').value;
+                agent.budgetLimit = parseInt(document.getElementById('editAgentBudget').value) || 0;
+                saveData();
+                closeModal();
+                renderView(currentView);
+            }
+        }
+
+        // ===== GIT HUB SYNC =====
+        async function syncToGitHub() {
+            const dataStr = JSON.stringify(data, null, 2);
+            alert('GitHub sync coming soon! Data saved locally.\n\n' + dataStr.substring(0, 100) + '...');
+        }
+
+        // ===== INIT =====
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                if (item.dataset.view) {
+                    renderView(item.dataset.view);
                 }
             });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.step, .feature, .org-node, .testimonial, .cost-card, .heartbeat-card').forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(20px)';
-            el.style.transition = 'all 0.6s ease';
-            observer.observe(el);
         });
 
-        // Animate cost bars on scroll
-        const costObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const fill = entry.target.querySelector('.cost-bar-fill');
-                    fill.style.width = fill.style.width || '0%';
-                }
-            });
-        }, { threshold: 0.5 });
-
-        document.querySelectorAll('.cost-card').forEach(el => costObserver.observe(el));
+        // Initial render
+        renderView('overview');
     </script>
 </body>
 </html>
