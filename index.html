@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Network — B.K. 🐙</title>
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a24;
+            --text-primary: #ffffff;
+            --text-secondary: #8b8b9a;
+            --accent: #7c5cff;
+            --accent-secondary: #5c8aff;
+            --success: #4ade80;
+            --warning: #fbbf24;
+            --danger: #f87171;
+            --border: #2a2a3a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .logo .emoji {
+            font-size: 28px;
+        }
+
+        .header-stats {
+            display: flex;
+            gap: 32px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Main Content */
+        main {
+            padding: 32px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* Mission Section */
+        .mission-section {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 32px;
+        }
+
+        .mission-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+            margin-bottom: 8px;
+        }
+
+        .mission-text {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        /* Org Chart */
+        .section-title {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .org-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .org-level {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .org-connector {
+            display: flex;
+            justify-content: center;
+        }
+
+        .org-connector-line {
+            width: 2px;
+            height: 24px;
+            background: var(--border);
+        }
+
+        .org-connector-h {
+            display: flex;
+            gap: 20px;
+        }
+
+        .org-connector-h-line {
+            width: 40px;
+            height: 2px;
+            background: var(--border);
+            align-self: flex-start;
+            margin-top: 11px;
+        }
+
+        /* Agent Card */
+        .agent-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            width: 280px;
+            transition: all 0.2s ease;
+        }
+
+        .agent-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .agent-card.ceo {
+            width: 320px;
+            background: linear-gradient(135deg, var(--bg-card) 0%, rgba(124, 92, 255, 0.1) 100%);
+            border-color: var(--accent);
+        }
+
+        .agent-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .agent-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            background: var(--bg-secondary);
+        }
+
+        .agent-card.ceo .agent-avatar {
+            background: var(--accent);
+            font-size: 28px;
+        }
+
+        .agent-info h3 {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .agent-info .role {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .agent-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+        }
+
+        .status-dot.offline {
+            background: var(--text-secondary);
+        }
+
+        .status-dot.busy {
+            background: var(--warning);
+        }
+
+        .status-text {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .agent-stats {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 12px;
+        }
+
+        .agent-stat {
+            flex: 1;
+            text-align: center;
+            padding: 8px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+
+        .agent-stat-value {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .agent-stat-label {
+            font-size: 10px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        .agent-description {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .project-name {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .project-status {
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            background: rgba(74, 222, 128, 0.2);
+            color: var(--success);
+        }
+
+        .project-status.ideation {
+            background: rgba(251, 191, 36, 0.2);
+            color: var(--warning);
+        }
+
+        .project-description {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .project-progress {
+            height: 6px;
+            background: var(--bg-secondary);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .project-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--accent-secondary));
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        .project-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* Tasks Section */
+        .tasks-section {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        .tasks-list {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            background: var(--bg-secondary);
+            transition: background 0.2s;
+        }
+
+        .task-item:hover {
+            background: var(--bg-primary);
+        }
+
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .task-checkbox.completed {
+            background: var(--success);
+            border-color: var(--success);
+        }
+
+        .task-checkbox.completed::after {
+            content: '✓';
+            color: var(--bg-primary);
+            font-size: 12px;
+        }
+
+        .task-content {
+            flex: 1;
+        }
+
+        .task-title {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .task-item.completed .task-title {
+            text-decoration: line-through;
+            color: var(--text-secondary);
+        }
+
+        .task-meta {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .task-agent {
+            font-size: 11px;
+            padding: 4px 8px;
+            background: var(--bg-primary);
+            border-radius: 4px;
+            color: var(--accent);
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            padding: 14px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 8px;
+        }
+
+        .action-btn:hover {
+            background: var(--bg-primary);
+            border-color: var(--accent);
+        }
+
+        .action-btn.primary {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .action-btn.primary:hover {
+            background: #6a4ce0;
+        }
+
+        .action-icon {
+            font-size: 18px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 32px;
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .org-level {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .tasks-section {
+                grid-template-columns: 1fr;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <span class="emoji">🐙</span>
+            <span>Agent Network</span>
+        </div>
+        <div class="header-stats">
+            <div class="stat">
+                <div class="stat-value">4</div>
+                <div class="stat-label">Agentes</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">3</div>
+                <div class="stat-label">Projetos</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">5</div>
+                <div class="stat-label">Tarefas</div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Mission -->
+        <section class="mission-section">
+            <div class="mission-label">🎯 Missão Principal</div>
+            <div class="mission-text">Sair da CLT, alcançar R$15K+/mês, aposentadoria aos 35</div>
+        </section>
+
+        <!-- Org Chart -->
+        <section>
+            <div class="section-title">📊 Organograma</div>
+            <div class="org-chart">
+                <!-- CEO Level -->
+                <div class="org-level">
+                    <div class="agent-card ceo">
+                        <div class="agent-header">
+                            <div class="agent-avatar">👤</div>
+                            <div class="agent-info">
+                                <h3>João</h3>
+                                <span class="role">CEO — Fundador</span>
+                            </div>
+                        </div>
+                        <div class="agent-status">
+                            <span class="status-dot"></span>
+                            <span class="status-text">Online agora</span>
+                        </div>
+                        <div class="agent-stats">
+                            <div class="agent-stat">
+                                <div class="agent-stat-value">3</div>
+                                <div class="agent-stat-label">Projetos</div>
+                            </div>
+                            <div class="agent-stat">
+                                <div class="agent-stat-value">4</div>
+                                <div class="agent-stat-label">Agentes</div>
+                            </div>
+                        </div>
+                        <p class="agent-description">Gerente de loja, estrategista, absorve conhecimento rápido. Foco: execução consistente.</p>
+                    </div>
+                </div>
+
+                <div class="org-connector">
+                    <div class="org-connector-line"></div>
+                </div>
+
+                <!-- COO Level -->
+                <div class="org-level">
+                    <div class="agent-card">
+                        <div class="agent-header">
+                            <div class="agent-avatar">🐙</div>
+                            <div class="agent-info">
+                                <h3>B.K.</h3>
+                                <span class="role">COO — Coordenação</span>
+                            </div>
+                        </div>
+                        <div class="agent-status">
+                            <span class="status-dot"></span>
+                            <span class="status-text">Online 24/7</span>
+                        </div>
+                        <div class="agent-stats">
+                            <div class="agent-stat">
+                                <div class="agent-stat-value">3</div>
+                                <div class="agent-stat-label">Delegadas</div>
+                            </div>
+                            <div class="agent-stat">
+                                <div class="agent-stat-value">∞</div>
+                                <div class="agent-stat-label">Contínua</div>
+                            </div>
+                        </div>
+                        <p class="agent-description">Direto, proativo, técnico. Coordena toda a rede, cobra entregas, sugere próximos passos.</p>
+                    </div>
+                </div>
+
+                <div class="org-connector">
+                    <div class="org-connector-line"></div>
+                </div>
+
+                <!-- Specialized Agents Level -->
+                <div class="org-level">
+                    <div class="agent-card">
+                        <div class="agent-header">
+                            <div class="agent-avatar">💻</div>
+                            <div class="agent-info">
+                                <h3>Dev</h3>
+                                <span class="role">CTO — Desenvolvimento</span>
+                            </div>
+                        </div>
+                        <div class="agent-status">
+                            <span class="status-dot offline"></span>
+                            <span class="status-text">Sob demanda</span>
+                        </div>
+                        <div class="agent-stats">
+                            <div class="agent-stat">
+                                <div class="agent-stat-value">0</div>
+                                <div class="agent-stat-label">Tarefas</div>
+                            </div>
+                            <div class="agent-stat">
+                                <div class="agent-stat-value">Dev</div>
+                                <div class="agent-stat-label">Runtime</div>
+                            </div>
+                        </div>
+                        <p class="agent-description">Código, automações, scripts, integrações. Transforma processos manuais em soluções automatizadas.</p>
+                    </div>
+
+                    <div class="agent-card">
+                        <div class="agent-header">
+                            <div class="agent-avatar">📣</div>
+                            <div class="agent-info">
+                                <h3>Marketer</h3>
+                                <span class="role">CMO — Marketing</span>
+                            </div>
+                        </div>
+                        <div class="agent-status">
+                            <span class="status-dot offline"></span>
+                            <span class="status-text">Sob demanda</span>
+                        </div>
+                        <div class="agent-stats">
+                            <div class="agent-stat">
+                                <div class="agent-stat-value">0</div>
+                                <div class="agent-stat-label">Tarefas</div>
+                            </div>
+                            <div class="agent-stat">
+                                <div class="agent-stat-value">Copy</div>
+                                <div class="agent-stat-label">Foco</div>
+                            </div>
+                        </div>
+                        <p class="agent-description">Conteúdo, copy, social media, estratégia. Construi marca e gera demanda pro seus projetos.</p>
+                    </div>
+
+                    <div class="agent-card">
+                        <div class="agent-header">
+                            <div class="agent-avatar">🔍</div>
+                            <div class="agent-info">
+                                <h3>Researcher</h3>
+                                <span class="role">CIO — Pesquisa</span>
+                            </div>
+                        </div>
+                        <div class="agent-status">
+                            <span class="status-dot offline"></span>
+                            <span class="status-text">Sob demanda</span>
+                        </div>
+                        <div class="agent-stats">
+                            <div class="agent-stat">
+                                <div class="agent-stat-value">0</div>
+                                <div class="agent-stat-label">Tarefas</div>
+                            </div>
+                            <div class="agent-stat">
+                                <div class="agent-stat-value">Análise</div>
+                                <div class="agent-stat-label">Foco</div>
+                            </div>
+                        </div>
+                        <p class="agent-description">Pesquisa, análise de mercado, competitive intelligence. Informa decisões com dados.</p>
+                    </div>
+
+                    <div class="agent-card">
+                        <div class="agent-header">
+                            <div class="agent-avatar">⚙️</div>
+                            <div class="agent-info">
+                                <h3>Ops</h3>
+                                <span class="role">COO — Operações</span>
+                            </div>
+                        </div>
+                        <div class="agent-status">
+                            <span class="status-dot offline"></span>
+                            <span class="status-text">Sob demanda</span>
+                        </div>
+                        <div class="agent-stats">
+                            <div class="agent-stat">
+                                <div class="agent-stat-value">0</div>
+                                <div class="agent-stat-label">Tarefas</div>
+                            </div>
+                            <div class="agent-stat">
+                                <div class="agent-stat-value">Rotina</div>
+                                <div class="agent-stat-label">Foco</div>
+                            </div>
+                        </div>
+                        <p class="agent-description">Tarefas rotineiras, organização, lembretes, controle. Libera seu tempo pro que importa.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects -->
+        <section style="margin-top: 48px;">
+            <div class="section-title">🚀 Projetos</div>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-name">🏪 Loja de Atacado (Rifa)</div>
+                        <div class="project-status">Em andamento</div>
+                    </div>
+                    <p class="project-description">CLT atual. Laboratório pra automação. Cada processo manual = módulo de SaaS futuro.</p>
+                    <div class="project-progress">
+                        <div class="project-progress-bar" style="width: 40%"></div>
+                    </div>
+                    <div class="project-meta">
+                        <span>Fase 1: Mapeamento</span>
+                        <span>Meta: R$7k–10k/mês</span>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-name">📣 Agência de Marketing</div>
+                        <div class="project-status">Em andamento</div>
+                    </div>
+                    <p class="project-description">Serviços de marketing, tráfego, conteúdo. Parte técnica e operacional.</p>
+                    <div class="project-progress">
+                        <div class="project-progress-bar" style="width: 15%"></div>
+                    </div>
+                    <div class="project-meta">
+                        <span>Próximo: Serviços + Preço</span>
+                        <span>Meta: R$10k–20k/mês</span>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-name">🤖 SaaS com IA</div>
+                        <div class="project-status ideation">Ideação</div>
+                    </div>
+                    <p class="project-description">Automação modular da loja → micro-SaaS → produto replicável. Renda passiva.</p>
+                    <div class="project-progress">
+                        <div class="project-progress-bar" style="width: 5%"></div>
+                    </div>
+                    <div class="project-meta">
+                        <span>Próximo: Validar MVP</span>
+                        <span>Meta: R$20k–35k/mês</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tasks & Quick Actions -->
+        <section class="tasks-section">
+            <div class="tasks-list">
+                <div class="section-title">📋 Tarefas</div>
+                <div class="task-item">
+                    <div class="task-checkbox" onclick="toggleTask(this)"></div>
+                    <div class="task-content">
+                        <div class="task-title">Definir primeira automação da loja</div>
+                        <div class="task-meta">Loja Rifa • Prioridade alta</div>
+                    </div>
+                    <div class="task-agent">Ops</div>
+                </div>
+                <div class="task-item">
+                    <div class="task-checkbox" onclick="toggleTask(this)"></div>
+                    <div class="task-content">
+                        <div class="task-title">Mapear processos manuais da loja</div>
+                        <div class="task-meta">Loja Rifa • Depende de: definir primeira automação</div>
+                    </div>
+                    <div class="task-agent">Researcher</div>
+                </div>
+                <div class="task-item">
+                    <div class="task-checkbox" onclick="toggleTask(this)"></div>
+                    <div class="task-content">
+                        <div class="task-title">Criar copy para serviços da agência</div>
+                        <div class="task-meta">Agência • Prioridade média</div>
+                    </div>
+                    <div class="task-agent">Marketer</div>
+                </div>
+                <div class="task-item completed">
+                    <div class="task-checkbox completed" onclick="toggleTask(this)"></div>
+                    <div class="task-content">
+                        <div class="task-title">Conectar GitHub ao OpenClaw</div>
+                        <div class="task-meta">Infraestrutura • Concluído</div>
+                    </div>
+                    <div class="task-agent">B.K.</div>
+                </div>
+                <div class="task-item">
+                    <div class="task-checkbox" onclick="toggleTask(this)"></div>
+                    <div class="task-content">
+                        <div class="task-title">Validar ideia de MVP (SaaS)</div>
+                        <div class="task-meta">SaaS • Prioridade alta</div>
+                    </div>
+                    <div class="task-agent">Researcher</div>
+                </div>
+            </div>
+
+            <div class="quick-actions">
+                <div class="section-title">⚡ Ações Rápidas</div>
+                <button class="action-btn primary" onclick="window.open('https://github.com/JoaoPTCastro/agent-network', '_blank')">
+                    <span class="action-icon">🔄</span>
+                    <span>Deploy para GitHub</span>
+                </button>
+                <button class="action-btn" onclick="window.open('https://github.com/JoaoPTCastro', '_blank')">
+                    <span class="action-icon">👤</span>
+                    <span>Ver GitHub</span>
+                </button>
+                <button class="action-btn" onclick="window.open('https://paperclip.ing/', '_blank')">
+                    <span class="action-icon">📄</span>
+                    <span>Referência Paperclip</span>
+                </button>
+                <button class="action-btn">
+                    <span class="action-icon">➕</span>
+                    <span>Novo Projeto</span>
+                </button>
+                <button class="action-btn">
+                    <span class="action-icon">🤖</span>
+                    <span>Ativar Novo Agente</span>
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Agent Network • Powered by OpenClaw & B.K. 🐙</p>
+        <p style="margin-top: 8px;">João Pedro Theotônio de Castro • 2026</p>
+    </footer>
+
+    <script>
+        function toggleTask(checkbox) {
+            checkbox.classList.toggle('completed');
+            checkbox.closest('.task-item').classList.toggle('completed');
+        }
+
+        // Update stats periodically
+        function updateStats() {
+            const completedTasks = document.querySelectorAll('.task-item.completed').length;
+            const totalTasks = document.querySelectorAll('.task-item').length;
+            document.querySelector('.header-stats .stat:nth-child(3) .stat-value').textContent = totalTasks;
+        }
+    </script>
+</body>
+</html>
